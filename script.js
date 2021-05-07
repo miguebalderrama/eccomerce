@@ -1,3 +1,5 @@
+var cantProductos = 0;
+var carrito=0;
 class Producto {
   constructor(id, descripcion, precio, image, sale) {
     this.id = id;
@@ -91,8 +93,26 @@ productos.push(
     0
   )
 );
-let carrito = new Array();
-var cantProductos = 0;
+var record=localStorage.getItem('datos');
+  console.log("Qie hay en mi record??"+record);
+   carrito=JSON.parse(record)
+if(carrito==null){
+ carrito = new Array();
+ cantProductos = 0;
+ 
+}
+else{
+  
+  cantProductos = carrito.length;///esto deberia ser una funcion
+  console.log("Qie hay en mi carrito??"+carrito);
+  var list = document.getElementById("carrito"); // Get the <ul> element with id="myList"
+  var eliminar = document.getElementById("childSpan");
+  list.removeChild(eliminar); // Remove <ul>'s first child node (index 0)
+  const p = document.createElement("span");
+  p.setAttribute("id", "childSpan");
+  p.textContent = cantProductos;
+  document.getElementById("carrito").appendChild(p);
+}
 
 let eventos = document.getElementsByClassName("button2");// guardo en le eventos(array) los botones de agregar al carrito
 for (const iterator of eventos) {
@@ -193,4 +213,9 @@ for (const iterator of eventos) {
 document.getElementById("compra").addEventListener("click", (event) => {
   localStorage.setItem("datos", JSON.stringify(carrito));
   console.log("compramos");
+});
+
+document.getElementById("vaciar").addEventListener("click", (event) => {
+  localStorage.removeItem("datos");
+  console.log("vaciamos el carrito");
 });

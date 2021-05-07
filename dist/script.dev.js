@@ -6,16 +6,20 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+var cantProductos = 0;
+var carrito = 0;
+
 var Producto =
 /*#__PURE__*/
 function () {
-  function Producto(id, descripcion, precio, image) {
+  function Producto(id, descripcion, precio, image, sale) {
     _classCallCheck(this, Producto);
 
     this.id = id;
     this.descripcion = descripcion;
     this.precio = precio;
     this.image = image;
+    this.sale = sale;
   }
 
   _createClass(Producto, [{
@@ -54,13 +58,37 @@ function () {
 }();
 
 var productos = new Array();
-productos.push(new Producto("bicicleta", "Bicicleta rodado 26 Urbana", 14000, "./img/web1.jpg"));
-productos.push(new Producto("notebook", "Notebook Lenovo S145 Intel I5", 95000, "./img/web3.jpg"));
-productos.push(new Producto("kayak", "Kayak Rocker Mirage 2 A 3 Pers.", 74244, "./img/kayak.jpg"));
-productos.push(new Producto("rasp", "Raspberry Pi 4 Model B 2gb Element14", 7799, "./img/web4.jpg"));
-productos.push(new Producto("rasp2", "Raspberry Pi 5 Model B 2gb Element14", 9500, "./img/web4.jpg"));
-var carrito = new Array();
-var eventos = document.getElementsByClassName("button2");
+productos.push(new Producto("bicicleta", "Bicicleta rodado 26 Urbana", 14000, "./img/web1.jpg", 0));
+productos.push(new Producto("notebook", "Notebook Lenovo S145 Intel I5", 98550, "./img/web3.jpg", 0));
+productos.push(new Producto("kayak", "Kayak Rocker Mirage 2 A 3 Pers.", 74244, "./img/kayak.jpg", 0));
+productos.push(new Producto("rasp", "Raspberry Pi 4 Model B 2gb Element14", 7799, "./img/web4.jpg", 0));
+productos.push(new Producto("whisky", "Whisky Johnnie Walker Black Label 750ml ", 9500, "./img/whisky.jpg", 0));
+productos.push(new Producto("sillongamer", "Sillón Pro Gamer Momentum ", 19320, "./img/sillagamer.jpg", 0));
+productos.push(new Producto("saxo", "Saxo Alto Custom Dorado Parquer + Estuche", 85259, "./img/saxo.jpg", 0));
+var record = localStorage.getItem('datos');
+console.log("Qie hay en mi record??" + record);
+carrito = JSON.parse(record);
+
+if (carrito == null) {
+  carrito = new Array();
+  cantProductos = 0;
+} else {
+  cantProductos = carrito.length; ///esto deberia ser una funcion
+
+  console.log("Qie hay en mi carrito??" + carrito);
+  var list = document.getElementById("carrito"); // Get the <ul> element with id="myList"
+
+  var eliminar = document.getElementById("childSpan");
+  list.removeChild(eliminar); // Remove <ul>'s first child node (index 0)
+
+  var p = document.createElement("span");
+  p.setAttribute("id", "childSpan");
+  p.textContent = cantProductos;
+  document.getElementById("carrito").appendChild(p);
+}
+
+var eventos = document.getElementsByClassName("button2"); // guardo en le eventos(array) los botones de agregar al carrito
+
 var _iteratorNormalCompletion = true;
 var _didIteratorError = false;
 var _iteratorError = undefined;
@@ -69,57 +97,128 @@ try {
   var _loop = function _loop() {
     var iterator = _step.value;
     iterator.addEventListener("click", function (event) {
+      cantProductos++;
+
       switch (iterator.id) {
         case "bike":
           console.log("Compramos una bicicleta");
           var bicicleta = productos.find(function (product) {
-            return product.id === 'bicicleta';
+            return product.id === "bicicleta";
           });
-          carrito.push(bicicleta);
-          var p = document.createElement("span");
-          p.textContent = carrito.length;
-          document.getElementById("carrito").appendChild(p);
+
+          if (bicicleta.sale === 0) {
+            bicicleta.sale++;
+            carrito.push(bicicleta);
+          } else {
+            bicicleta.sale++;
+          }
+
           break;
 
         case "notebook":
           console.log("Compramos la notebook");
           var notebook = productos.find(function (product) {
-            return product.id === 'notebook';
+            return product.id === "notebook";
           });
-          carrito.push(notebook);
-          var pa = document.createElement("pa");
-          pa.textContent = "Adquirio una " + notebook.descripcion + " al precio de $" + notebook.precio;
-          document.getElementById("carrito").appendChild(pa); //
+
+          if (notebook.sale === 0) {
+            notebook.sale++;
+            carrito.push(notebook);
+          } else {
+            notebook.sale++;
+          } //
+
 
           break;
 
         case "kayak":
           console.log("Compramos el kayak");
           var kayak = productos.find(function (product) {
-            return product.id === 'kayak';
+            return product.id === "kayak";
           });
-          carrito.push(kayak);
+
+          if (kayak.sale === 0) {
+            kayak.sale++;
+            carrito.push(kayak);
+          } else {
+            kayak.sale++;
+          }
+
           break;
 
         case "rasp":
           console.log("Compramos el raspberry 4");
           var rasp = productos.find(function (product) {
-            return product.id === 'rasp';
+            return product.id === "rasp";
           });
-          carrito.push(rasp);
+
+          if (rasp.sale === 0) {
+            rasp.sale++;
+            carrito.push(rasp);
+          } else {
+            rasp.sale++;
+          }
+
           break;
 
-        case "rasp2":
-          console.log("Compramos el raspberry 5");
-          var rasp2 = productos.find(function (product) {
-            return product.id === 'rasp2';
+        case "saxo":
+          console.log("Compramos un saxo");
+          var sax = productos.find(function (product) {
+            return product.id === "saxo";
           });
-          carrito.push(rasp2);
+
+          if (sax.sale === 0) {
+            sax.sale++;
+            carrito.push(sax);
+          } else {
+            sax.sale++;
+          }
+
+          break;
+
+        case "whisky":
+          console.log("Compramos un whisky");
+          var whisk = productos.find(function (product) {
+            return product.id === "whisky";
+          });
+
+          if (whisk.sale === 0) {
+            whisk.sale++;
+            carrito.push(whisk);
+          } else {
+            whisk.sale++;
+          }
+
+          break;
+
+        case "sillongamer":
+          console.log("Compramos el raspberry 5");
+          var sillagamer = productos.find(function (product) {
+            return product.id === "sillongamer";
+          });
+
+          if (sillagamer.sale === 0) {
+            sillagamer.sale++;
+            carrito.push(sillagamer);
+          } else {
+            sillagamer.sale++;
+          }
+
           break;
 
         default:
           console.log("Sorry, nose");
       }
+
+      var list = document.getElementById("carrito"); // Get the <ul> element with id="myList"
+
+      var eliminar = document.getElementById("childSpan");
+      list.removeChild(eliminar); // Remove <ul>'s first child node (index 0)
+
+      var p = document.createElement("span");
+      p.setAttribute("id", "childSpan");
+      p.textContent = cantProductos;
+      document.getElementById("carrito").appendChild(p);
     });
   };
 
@@ -142,6 +241,10 @@ try {
 }
 
 document.getElementById("compra").addEventListener("click", function (event) {
-  localStorage.setItem('datos', JSON.stringify(carrito));
+  localStorage.setItem("datos", JSON.stringify(carrito));
   console.log("compramos");
+});
+document.getElementById("vaciar").addEventListener("click", function (event) {
+  localStorage.removeItem("datos");
+  console.log("vaciamos el carrito");
 });
